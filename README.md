@@ -7,7 +7,8 @@
 
 ## 🗒 Descripción
 Problema a resolver: Planificación y organización de actividades.
-Pretendemos acompañarlo de un **bot para Telegram** que simplifique la consulta e inserción de actividades a realizar con todos sus campos.
+
+Como solución emplearemos un módulo encargado de llevar cabo la administración (basada en operacinoes CRUD) de las actividades. Pretendemos acompañarlo de un **bot para Telegram** que simplifique la consulta, inserción y recuerdo de actividades a realizar con todos sus campos.
 
 ## 🔧 Herramientas
 - Módulo central: **Go**
