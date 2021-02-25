@@ -63,7 +63,7 @@ func main() {
 		name:        "prueba 1",
 		duration:    10,
 		description: "Esto es una descripcion de la prueba 1",
-		state:       false,
+		finish:       false,
 		subActivity: newSubActivity("subActividad 1"),
 	}
 
