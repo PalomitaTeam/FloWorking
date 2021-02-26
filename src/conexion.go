@@ -15,20 +15,22 @@ const(
 	COLLECTION = "Activities"
 )
 
-func connectToMogo() (*mongo.Client) { //Cambiar <password> por la contraseña y myFirstDatabase por db
-
+func connectToMongo() (*mongo.Client, *context.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 	fmt.Println(os.Getenv("MONGO_URI"))
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
-		"mongodb+srv:// FloWork:FloWorkingAngelJJ@cluster0.lujjr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+		fmt.Sprintf(
+			"MONGO_URI=mongodb+srv://%s:%s@cluster0.lujjr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+			os.Getenv("USER"), os.Getenv("PASS"),
+		),
 	))
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	return client
+	return client, &ctx
 }
 
 func disconectFromMongo(client * mongo.Client) {
@@ -41,12 +43,18 @@ func disconectFromMongo(client * mongo.Client) {
 }
 
 
-func insertActivity(col* mongo.Collection, act Activity) {
-	insertResult, err := col.InsertOne(context.TODO(), act)
+func insertActivity(col* mongo.Collection, ctx* context.Context, act Activity) {
+	var results []bson.M
+	v, err := col.Find(*ctx, bson.M{})
 	if err != nil {
-		log.Fatal(err)
+		log.Println(err)
 	}
-	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+
+	if err := v.All(*ctx, &results); err != nil {
+		panic(err)
+	}
+
+	fmt.Println(v)
 }
 
 func getAllActivities(col* mongo.Collection) []*Activity {
@@ -83,14 +91,22 @@ func getAllActivities(col* mongo.Collection) []*Activity {
 }
 
 func main() {
-	db := connectToMogo()
+	db,ctx := connectToMongo()
 
 	fmt.Println("Conectado")
-	collection := db.Database(DB).Collection(COLLECTION)
 
-	results := getAllActivities(collection)
+	collection := db.Database(COLLECTION).Collection(DB)
 
-	fmt.Println(results)
+	act := Activity{
+		id:          "78",
+		name:        "prueba 1",
+		duration:    10,
+		description: "Esto es una descripcion de la prueba 1",
+		status:       0,
+		subActivity: newSubActivity("subActividad 1"),
+	}
+
+	insertActivity(collection, ctx, act);
 
 	disconectFromMongo(db)
 }
