@@ -21,7 +21,7 @@ func connectToMogo() (*mongo.Client) { //Cambiar <password> por la contraseña y
 	defer cancel()
 	fmt.Println(os.Getenv("MONGO_URI"))
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
-		"mongodb+srv:// FloWork:FloWorkingAngelJJ@cluster0.lujjr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+		
 	))
 
 	if err != nil {
