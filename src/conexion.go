@@ -6,24 +6,28 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"os"
+	"time"
 )
 
-func connectToMogo() (*mongo.Client) {						//Cambiar <password> por la contraseña y myFirstDatabase por db
-	clientOptions := options.Client().ApplyURI("server de mongo",)
-	client, err := mongo.Connect(context.TODO(), clientOptions)
+const(
+	DB = "FloWorking"
+	COLLECTION = "Activities"
+)
 
-	// Los errores habría que sacarlos de aqui (?)
+func connectToMogo() (*mongo.Client) { //Cambiar <password> por la contraseña y myFirstDatabase por db
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	fmt.Println(os.Getenv("MONGO_URI"))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
+		"mongodb+srv:// FloWork:FloWorkingAngelJJ@cluster0.lujjr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+	))
+
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	// Check the connection
-	err = client.Ping(context.TODO(), nil)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	fmt.Println("Connected to MongoDB!")
 	return client
 }
 
@@ -76,34 +80,17 @@ func getAllActivities(col* mongo.Collection) []*Activity {
 	}
 
 	return results
-	/*
-	var results []interface{}
-	err := col.FindOne(context.TODO(),"{duration:90}").Decode(&results)
-	if err != nil {
-		log.Fatal(err)
-	}
-	return results
-	*/
-
 }
 
 func main() {
 	db := connectToMogo()
-	collection := db.Database("FloWorking").Collection("Activities")
 
-	/*act := Activity{
-		id:          "a",
-		name:        "prueba 1",
-		duration:    10,
-		description: "Esto es una descripcion de la prueba 1",
-		status:       pending,
-		subActivity: newSubActivity("subActividad 1"),
-	}*/
+	fmt.Println("Conectado")
+	collection := db.Database(DB).Collection(COLLECTION)
 
-	//(collection, act)
-	fmt.Println("Insertada la actividad")
-	var results []*Activity
-	results= getAllActivities(collection)
-	fmt.Printf("Found multiple documents (array of pointers): %+v\n", results)
+	results := getAllActivities(collection)
+
+	fmt.Println(results)
+
 	disconectFromMongo(db)
 }
