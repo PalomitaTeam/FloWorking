@@ -5,6 +5,7 @@ import (
 )
 
 type Status int
+
 const(
 	pending		Status = iota
 	in_progress
@@ -31,11 +32,11 @@ func newActivity(nombre string, duration int, description string,
 
 func (a Activity) String() string {
 	return fmt.Sprintf(
-		"ID: %b, \n"+
+		"ID: %s, \n"+
 			"Name: %s, \n"+
-			"Duration: %.2f min, \n"+
+			"Duration: %d min, \n"+
 			"Description: %s, \n"+
-			"Status: %s, \n"+
+			"Status: %d, \n"+
 			"SubAct: {%s}, \n",
 		a.id, a.name, a.duration, a.description, a.status, a.subActivity.name,
 	)
