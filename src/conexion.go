@@ -8,8 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func connectToMogo() (*mongo.Client) {
-	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+func connectToMogo() (*mongo.Client) {						//Cambiar <password> por la contraseña
+	clientOptions := options.Client().ApplyURI("server de mongo")
 	client, err := mongo.Connect(context.TODO(), clientOptions)
 
 	// Los errores habría que sacarlos de aqui (?)
@@ -36,7 +36,8 @@ func disconectFromMongo(client * mongo.Client) {
 	fmt.Println("Connection to MongoDB closed.")
 }
 
-func insertActivity(col* Collection, act Activity) {
+
+func insertActivity(col* mongo.Collection, act Activity) {
 	insertResult, err := col.InsertOne(context.TODO(), act)
 	if err != nil {
 		log.Fatal(err)
@@ -44,9 +45,9 @@ func insertActivity(col* Collection, act Activity) {
 	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
 }
 
-func getAllActivities(col* Collection) []Activity {
-	var results []Activity
-	err := col.Find(nil).All(&results)
+func getAllActivities(col* mongo.Collection) []interface{} {
+	var results []interface{}
+	err := col.FindOne(context.TODO(),"{duration:90}").Decode(&results)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -55,15 +56,14 @@ func getAllActivities(col* Collection) []Activity {
 
 func main() {
 	db := connectToMogo()
-
-	collection := db.Database("floworking").Collection("activities")
+	collection := db.Database("FloWorking").Collection("Activities")
 
 	act := Activity{
-		id:          nil,
+		id:          "a",
 		name:        "prueba 1",
 		duration:    10,
 		description: "Esto es una descripcion de la prueba 1",
-		finish:       false,
+		status:       pending,
 		subActivity: newSubActivity("subActividad 1"),
 	}
 

@@ -2,20 +2,28 @@ package main
 
 import "fmt"
 
+type Status int
+const(
+	pending		Status = iota
+	in_progress
+	completed
+)
+
+
 type Activity struct {
-	id          uint64
+	id          string
 	name        string
-	duration    float32
+	duration    int
 	description string
-	finish       bool
+	status		Status
 	subActivity subActivity
 }
 
-func newActivity(nombre string, duration float32, description string,
+func newActivity(nombre string, duration int, description string,
 	subActivity subActivity) Activity {
 	// ¿Asignar id preguntandole a mongo?
-	return Activity{0, nombre, duration,
-		description, false, subActivity}
+	return Activity{"0", nombre, duration,
+		description, pending, subActivity}
 
 }
 
@@ -25,8 +33,8 @@ func (a Activity) String() string {
 			"Name: %s, \n"+
 			"Duration: %.2f min, \n"+
 			"Description: %s, \n"+
-			"Finish?: %t, \n"+
+			"Status: %s, \n"+
 			"SubAct: {%s}, \n",
-		a.id, a.name, a.duration, a.description, a.finish, a.subActivity.name,
+		a.id, a.name, a.duration, a.description, a.status, a.subActivity.name,
 	)
 }

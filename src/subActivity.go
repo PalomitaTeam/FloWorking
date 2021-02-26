@@ -2,9 +2,9 @@ package main
 
 type subActivity struct {
 	name  string
-	state bool
+	status Status
 }
 
 func newSubActivity(name string) subActivity {
-	return subActivity{name, true}
+	return subActivity{name, pending}
 }
