@@ -8,3 +8,14 @@ entrar al shell -> docker exec -it myMongo bash
     ""
 
 {"name":"NombreAct","duration":"60","description":"Some description to test","status":"0","SubActivity":{"name":"NombreSubactivity", "status":"1"}}
+
+=================================================
+=================================================
+docker-compose up
+insertar: (usando MongoDB COMPASS)
+{
+    "name": "NombreAct",
+    "duration": "60",
+    "description": "Some description to test",
+    "status": "0"
+}
