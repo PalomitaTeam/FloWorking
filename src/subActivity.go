@@ -1,10 +1,11 @@
 package main
 
 type subActivity struct {
-	name  string
+	id     *string
+	name   string
 	status Status
 }
 
 func newSubActivity(name string) subActivity {
-	return subActivity{name, pending}
+	return subActivity{nil,name, pending}
 }

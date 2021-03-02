@@ -14,7 +14,7 @@ const(
 
 
 type Activity struct {
-	id          string
+	id          *string
 	name        string
 	duration    int
 	description string
@@ -25,7 +25,7 @@ type Activity struct {
 func newActivity(nombre string, duration int, description string,
 	subActivity subActivity) Activity {
 	// ¿Asignar id preguntandole a mongo?
-	return Activity{"0", nombre, duration,
+	return Activity{nil, nombre, duration,
 		description, pending, subActivity}
 
 }
