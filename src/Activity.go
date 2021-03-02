@@ -1,8 +1,6 @@
 package main
 
-import (
-	"fmt"
-)
+import "fmt"
 
 type Status int
 
@@ -14,19 +12,18 @@ const(
 
 
 type Activity struct {
-	id          *string
-	name        string
-	duration    int
-	description string
-	status		Status
-	subActivity subActivity
+	id          *string `bson:"_id"`
+	name        string  `bson:"name,omitempty"`
+	duration    int     `bson:"duration"`
+	description string  `bson:"description,omitempty"`
+	status		Status  `bson:"status"`
 }
 
 func newActivity(nombre string, duration int, description string,
 	subActivity subActivity) Activity {
 	// ¿Asignar id preguntandole a mongo?
 	return Activity{nil, nombre, duration,
-		description, pending, subActivity}
+		description, pending}
 
 }
 
@@ -37,7 +34,8 @@ func (a Activity) String() string {
 			"Duration: %d min, \n"+
 			"Description: %s, \n"+
 			"Status: %d, \n"+
-			"SubAct: {%s}, \n",
-		a.id, a.name, a.duration, a.description, a.status, a.subActivity.name,
+			"SubAct: {nil}, \n",
+		a.id, a.name, a.duration, a.description, a.status,
 	)
 }
+
