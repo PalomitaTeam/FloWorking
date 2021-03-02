@@ -2,17 +2,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
-	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	log "github.com/sirupsen/logrus"
 	"os"
 	"time"
-)
-
-const(
-	DB = "FloWorking"
-	COLLECTION = "Activities"
 )
 
 func connectToMongo() (*mongo.Client, *context.Context) {
@@ -21,15 +16,14 @@ func connectToMongo() (*mongo.Client, *context.Context) {
 	fmt.Println(os.Getenv("MONGO_URI"))
 	client, err := mongo.Connect(ctx, options.Client().ApplyURI(
 		fmt.Sprintf(
-			"MONGO_URI=mongodb+srv://%s:%s@cluster0.lujjr.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
-			os.Getenv("USER"), os.Getenv("PASS"),
+			"mongodb://localhost:27017",
 		),
 	))
 
 	if err != nil {
-		log.Fatal(err)
+		log.Error("No se ha creado la conexión con Mongo" , err)
 	}
-
+	log.Info("Conectado a Mongo")
 	return client, &ctx
 }
 
@@ -37,14 +31,19 @@ func disconectFromMongo(client * mongo.Client) {
 	err := client.Disconnect(context.TODO())
 
 	if err != nil {
-		log.Fatal(err)
+		log.Error("Desconectando Mongo", err)
 	}
-	fmt.Println("Connection to MongoDB closed.")
+	log.Info("Connection to MongoDB closed.")
 }
 
 
 func insertActivity(col* mongo.Collection, ctx* context.Context, act Activity) {
-	var results []bson.M
+	insertResult, err := col.InsertOne(context.TODO(), act)
+	if err != nil {
+		log.Error("Insertando Actividad", err)
+	}
+	fmt.Println("Inserted a single document: ", insertResult.InsertedID)
+	/*var results []bson.M
 	v, err := col.Find(*ctx, bson.M{})
 	if err != nil {
 		log.Println(err)
@@ -54,7 +53,7 @@ func insertActivity(col* mongo.Collection, ctx* context.Context, act Activity) {
 		panic(err)
 	}
 
-	fmt.Println(v)
+	fmt.Println(v)*/
 }
 
 func getAllActivities(col* mongo.Collection) []*Activity {
@@ -66,7 +65,7 @@ func getAllActivities(col* mongo.Collection) []*Activity {
 	// Passing bson.D{{}} as the filter matches all documents in the collection
 	cur, err := col.Find(context.TODO(), bson.D{{}}, findOptions)
 	if err != nil {
-		log.Fatal(err)
+		log.Error(err)
 	}
 
 	// Finding multiple documents returns a cursor
@@ -91,14 +90,25 @@ func getAllActivities(col* mongo.Collection) []*Activity {
 }
 
 func main() {
-	db,ctx := connectToMongo()
+	log.SetFormatter(&log.JSONFormatter{})
+	file, err := os.OpenFile("logs.log", os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		fmt.Println("No se ha podido crear el fichero de logs")
+	}
+	defer file.Close()
+	log.SetOutput(file)
+	db, ctx := connectToMongo()
 
+	if ctx == nil {
+		log.Println("ctx nil")
+		fmt.Println("ctx nil")
+	}
 	fmt.Println("Conectado")
 
-	collection := db.Database(COLLECTION).Collection(DB)
+	collection := db.Database(os.Getenv("DB")).Collection(os.Getenv("COLLECTION"))
+	log.Info(collection)
 
 	act := Activity{
-		id:          "78",
 		name:        "prueba 1",
 		duration:    10,
 		description: "Esto es una descripcion de la prueba 1",
