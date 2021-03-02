@@ -10,6 +10,8 @@ Problema a resolver: Planificación y organización de actividades.
 
 Como solución emplearemos un módulo encargado de llevar cabo la administración (basada en operacinoes CRUD) de las actividades. Pretendemos acompañarlo de un **bot para Telegram** que simplifique la consulta, inserción y recuerdo de actividades a realizar con todos sus campos.
 
+[Historias de usuario y milestones](https://github.com/PalomitaTeam/FloWorking/blob/master/docs/hu-milestone.md)
+
 ## 🔧 Herramientas
 - Módulo central: **Go**
 - Base de datos: **MongoDB**
