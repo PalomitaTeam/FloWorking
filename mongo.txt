@@ -1,0 +1,10 @@
+docker run -d -p 2717:27017 -v ~/pruebas:/data/db --name myMongo mongo:latest
+
+
+docker ps -> ver corriendo
+
+entrar al shell -> docker exec -it myMongo bash
+                    # mongo
+    ""
+
+{"name":"NombreAct","duration":"60","description":"Some description to test","status":"0","SubActivity":{"name":"NombreSubactivity", "status":"1"}}
