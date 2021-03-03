@@ -4,9 +4,13 @@ package main
 
 func main() {
 
-	setUpLogs()
+	f := setUpLogs()
 
-	collection := connectToMongo()
+	defer closeLogFile(f)
+
+	cliente, collection := connectToMongo()
 
 	getAllActivities(collection)
+
+	disconnectFromMongo(cliente)
 }

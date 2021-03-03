@@ -6,21 +6,25 @@ import (
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
+	. "go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"os"
+	. "os"
 	"time"
 )
 
-func setUpLogs() {
+func setUpLogs() *File {
 	log.SetFormatter(&log.JSONFormatter{})
-	file, err := os.OpenFile("../config/logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	file, err := OpenFile("../config/logs.log", O_APPEND|O_CREATE|O_WRONLY, 0666)
 	if err != nil {
 		fmt.Println("No se ha podido crear el fichero de logs")
 	}
 
-	defer file.Close()
 	log.SetOutput(file)
+	return file
+}
+
+func closeLogFile(file *File) {
+	file.Close()
 }
 
 func goDotEnvVariable(key string) string {
@@ -32,12 +36,11 @@ func goDotEnvVariable(key string) string {
 		log.Error("Error loading .env file")
 	}
 
-	return os.Getenv(key)
+	return Getenv(key)
 }
 
-
-func connectToMongo() *mongo.Collection {
-	client, err := mongo.NewClient(
+func connectToMongo() (*Client, *Collection) {
+	client, err := NewClient(
 		options.Client().ApplyURI(
 			goDotEnvVariable("MONGO_URI"),
 		),
@@ -48,10 +51,10 @@ func connectToMongo() *mongo.Collection {
 	err = client.Connect(ctx)
 	if err != nil { log.Error(err) }
 	collection := client.Database("Flow").Collection("activities")
-	return collection
+	return client, collection
 }
 
-func getAllActivities(collection *mongo.Collection) {
+func getAllActivities(collection *Collection) {
 	cur, err := collection.Find(context.Background(), bson.D{})
 	if err != nil { log.Fatal(err) }
 	defer cur.Close(context.Background())
@@ -70,4 +73,13 @@ func getAllActivities(collection *mongo.Collection) {
 	if err := cur.Err(); err != nil {
 		log.Error(err)
 	}
+}
+
+func disconnectFromMongo(cliente *Client) {
+	err := cliente.Disconnect(context.TODO())
+	if err != nil {
+		log.Error(err)
+	}
+
+	log.Info("Desconectado de mongo.")
 }
