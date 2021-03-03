@@ -30,7 +30,7 @@ func closeLogFile(file *File) {
 func goDotEnvVariable(key string) string {
 
 	// load .env file
-	err := godotenv.Load("config/.env")
+	err := godotenv.Load("../config/.env")
 
 	if err != nil {
 		log.Error("Error loading .env file")
@@ -50,7 +50,9 @@ func connectToMongo() (*Client, *Collection) {
 	defer cancel()
 	err = client.Connect(ctx)
 	if err != nil { log.Error(err) }
-	collection := client.Database("Flow").Collection("activities")
+	log.Info("Conectado a mongo")
+	collection := client.Database(goDotEnvVariable("DB")).Collection(goDotEnvVariable("COL"))
+	log.Info("Elegida la base de datos y la colección")
 	return client, collection
 }
 
@@ -73,6 +75,15 @@ func getAllActivities(collection *Collection) {
 	if err := cur.Err(); err != nil {
 		log.Error(err)
 	}
+}
+
+func insertActivity(collection *Collection, act Activity) (bool)  {
+	salida := true
+	res, err := collection.InsertOne(context.Background(), act)
+	if err != nil { log.Error(err) }
+	id := res.InsertedID
+	log.Info(fmt.Sprintf("Insertado actividad %s", id))
+	return salida
 }
 
 func disconnectFromMongo(cliente *Client) {

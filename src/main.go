@@ -1,18 +1,27 @@
 package main
 
-import log "github.com/sirupsen/logrus"
-
 func main() {
 
 	f := setUpLogs()
 
 	defer closeLogFile(f)
 
-	log.Info("hola esto e sun indo")
 
-	//cliente, collection := connectToMongo()
+	cliente, collection := connectToMongo()
 
-	//getAllActivities(collection)
+	a := Activity{
+		id:          nil,
+		name:        "prueba",
+		duration:    90,
+		description: "desde el main",
+		status:      0,
+	}
 
-	//disconnectFromMongo(cliente)
+	getAllActivities(collection)
+
+	insertActivity(collection, a)
+
+	getAllActivities(collection)
+
+	disconnectFromMongo(cliente)
 }

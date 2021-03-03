@@ -19,8 +19,7 @@ type Activity struct {
 	status		Status  `bson:"status"`
 }
 
-func newActivity(nombre string, duration int, description string,
-	subActivity subActivity) Activity {
+func newActivity(nombre string, duration int, description string) Activity {
 	// ¿Asignar id preguntandole a mongo?
 	return Activity{nil, nombre, duration,
 		description, pending}
