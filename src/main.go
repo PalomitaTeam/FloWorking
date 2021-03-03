@@ -1,6 +1,6 @@
 package main
 
-
+import log "github.com/sirupsen/logrus"
 
 func main() {
 
@@ -8,9 +8,11 @@ func main() {
 
 	defer closeLogFile(f)
 
-	cliente, collection := connectToMongo()
+	log.Info("hola esto e sun indo")
 
-	getAllActivities(collection)
+	//cliente, collection := connectToMongo()
 
-	disconnectFromMongo(cliente)
+	//getAllActivities(collection)
+
+	//disconnectFromMongo(cliente)
 }

@@ -14,7 +14,7 @@ import (
 
 func setUpLogs() *File {
 	log.SetFormatter(&log.JSONFormatter{})
-	file, err := OpenFile("../config/logs.log", O_APPEND|O_CREATE|O_WRONLY, 0666)
+	file, err := OpenFile("../config/logs.log", O_CREATE|O_WRONLY, 0666)
 	if err != nil {
 		fmt.Println("No se ha podido crear el fichero de logs")
 	}
