@@ -2,4 +2,4 @@ personas:
     - Fernando Alonso
 
 excepciones:
-    - 
+    - src/operations.go
