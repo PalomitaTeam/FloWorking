@@ -3,3 +3,4 @@ personas:
 
 excepciones:
     - src/operations.go
+    
