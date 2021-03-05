@@ -1,5 +1,4 @@
 config/
-.*
 src/logs.log
 mongo/
 mongo-volume/
