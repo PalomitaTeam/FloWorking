@@ -5,6 +5,5 @@ excepciones:
     - src/operations.go
 
 lenguaje: "Go",
-
 taskfile: "Makefile",
 
