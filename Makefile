@@ -1,4 +1,12 @@
+SRC   = src
+CXX   = go
+FLAGS = build
 
-%:
-    go $@
+compile:
+	go build src/*.go
 	
+run:
+	go run src/*.go
+
+clean: 
+	go clean
