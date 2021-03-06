@@ -1,12 +1,9 @@
-SRC   = src
-CXX   = go
-FLAGS = build
 
-compile:
+quickstart: src/*.go
 	go build src/*.go
 	
 run:
-	go run src/*.go
+	./src/quickstart
 
 clean: 
-	go clean
+	rm src/quickstart

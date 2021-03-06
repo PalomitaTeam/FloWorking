@@ -4,6 +4,9 @@ personas:
 excepciones:
     - src/operations.go
 
-lenguaje: "Go",
-taskfile: "Makefile",
+lenguaje:
+    - "Go"
+
+taskfile:
+    - "Makefile"
 
