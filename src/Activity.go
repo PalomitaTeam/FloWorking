@@ -8,7 +8,7 @@ const(
 	pending		Status = iota
 	in_progress
 	completed
-)
+) 
 
 
 type Activity struct {
