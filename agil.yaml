@@ -10,3 +10,6 @@ lenguaje:
 taskfile:
     - "Makefile"
 
+linter:
+    - "go vet"
+
