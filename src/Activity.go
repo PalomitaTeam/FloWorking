@@ -12,7 +12,7 @@ const(
 
 
 type Activity struct {
-	id          *string `bson:"_id"`
+	id          string `bson:"_id"`
 	name        string  `bson:"name,omitempty"`
 	duration    int     `bson:"duration"`
 	description string  `bson:"description,omitempty"`

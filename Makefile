@@ -6,7 +6,7 @@ run:
 	./src/quickstart
 
 check:
-	go vet (or sth similar)
+	go vet src/
 
 clean: 
 	rm src/quickstart
