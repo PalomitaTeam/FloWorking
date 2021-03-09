@@ -3,4 +3,5 @@ src/logs.log
 mongo/
 mongo-volume/
 .DS_Store
-src/Flow 
+src/Flow
+.idea/
