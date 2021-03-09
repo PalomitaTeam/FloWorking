@@ -1,8 +1,9 @@
 package tests
 
 import (
-	"testing"
+	"github.com/stretchr/testify/assert"
 	"src/Activity"
+	"testing"
 )
 
 func TestCreaAct(t *testing.T) {

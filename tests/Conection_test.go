@@ -1,6 +1,6 @@
 package tests
 
-import "testing"
+import "github.com/stretchr/testify/assert"
 
 func TestConexion(t *testing.T) {
 	db :=

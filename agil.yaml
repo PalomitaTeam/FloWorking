@@ -19,5 +19,5 @@ test:
     - tests/creaAct_test.go
     - tests/Conection_test.go
 
-aserciones: "@test"
+aserciones: "testify"
 
