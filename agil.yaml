@@ -13,3 +13,11 @@ taskfile:
 linter:
     - "go vet"
 
+test:
+    - tests/modificaAct_test.go
+    - tests/eliminaAct_test.go
+    - tests/creaAct_test.go
+    - tests/Conection_test.go
+
+aserciones: "@test"
+
