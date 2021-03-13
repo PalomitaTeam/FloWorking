@@ -1,8 +1,10 @@
 # FloWorking
 ------------------------------------
-- [Descripción](#Descripción)
-- [Herramientas](#Herramientas)
-- [Contribuidores](#Contribuidores)
+- [# FloWorking](#-floworking)
+- [🗒 Descripción](#-descripción)
+- [🔧 Herramientas](#-herramientas)
+- [📝 Instrucciones](#-instrucciones)
+- [Contribuidores](#contribuidores)
 
 
 ## 🗒 Descripción
@@ -19,6 +21,11 @@ Como solución emplearemos un módulo encargado de llevar cabo la administració
 - Servicios de _logging_: [**logrus**](https://github.com/sirupsen/logrus)
 - Configuración remota: por ahora no lo vemos necesario para nuestra solución.
 
+## 📝 Instrucciones
+Ejecución de los tests
+```sh
+make test
+```
 
 ## Contribuidores
 | Nombre | correo | linkdin |
