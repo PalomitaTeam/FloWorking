@@ -8,7 +8,7 @@ func main() {
 
 	defer closeLogFile(f)
 
-	cliente, collection := connectToMongo()
+	cliente, collection, _ := connectToMongo()
 
 	getAllActivities(collection)
 
