@@ -22,10 +22,11 @@ type Activity struct {
 func newActivity(nombre string, duration int, description string,
 	subActivity subActivity) Activity {
 	// ¿Asignar id preguntandole a mongo?
-	return Activity{nil, nombre, duration,
+	return Activity{"_", nombre, duration,
 		description, pending}
 
 }
+
 
 func (a Activity) String() string {
 	return fmt.Sprintf(

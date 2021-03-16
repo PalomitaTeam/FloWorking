@@ -8,13 +8,13 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	. "go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	. "os"
 	"time"
+	"os"
 )
 
-func setUpLogs() *File {
+func setUpLogs() *os.File {
 	log.SetFormatter(&log.JSONFormatter{})
-	file, err := OpenFile("../config/logs.log", O_APPEND|O_CREATE|O_WRONLY, 0666)
+	file, err := os.OpenFile("../config/logs.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		fmt.Println("No se ha podido crear el fichero de logs")
 	}
@@ -23,7 +23,7 @@ func setUpLogs() *File {
 	return file
 }
 
-func closeLogFile(file *File) {
+func closeLogFile(file *os.File) {
 	file.Close()
 }
 
@@ -36,10 +36,10 @@ func goDotEnvVariable(key string) string {
 		log.Error("Error loading .env file")
 	}
 
-	return Getenv(key)
+	return os.Getenv(key)
 }
 
-func connectToMongo() (*Client, *Collection) {
+func connectToMongo() (*Client, *Collection, error) {
 	client, err := NewClient(
 		options.Client().ApplyURI(
 			goDotEnvVariable("MONGO_URI"),
@@ -51,10 +51,10 @@ func connectToMongo() (*Client, *Collection) {
 	err = client.Connect(ctx)
 	if err != nil { log.Error(err) }
 	collection := client.Database("Flow").Collection("activities")
-	return client, collection
+	return client, collection, err
 }
 
-func getAllActivities(collection *Collection) {
+func getAllActivities(collection *Collection) error {
 	cur, err := collection.Find(context.Background(), bson.D{})
 	if err != nil { log.Fatal(err) }
 	defer cur.Close(context.Background())
@@ -73,13 +73,15 @@ func getAllActivities(collection *Collection) {
 	if err := cur.Err(); err != nil {
 		log.Error(err)
 	}
+	return err
 }
 
-func disconnectFromMongo(cliente *Client) {
+func disconnectFromMongo(cliente *Client) error {
 	err := cliente.Disconnect(context.TODO())
 	if err != nil {
 		log.Error(err)
 	}
 
 	log.Info("Desconectado de mongo.")
+	return err
 }
