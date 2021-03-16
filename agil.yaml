@@ -14,10 +14,9 @@ linter:
     - "go vet"
 
 test:
-    - tests/modificaAct_test.go
-    - tests/eliminaAct_test.go
-    - tests/creaAct_test.go
-    - tests/Conection_test.go
+    - src/obtenerActividades_test.go
+    - src/Disconnect_test.go
+    - src/Conection_test.go
 
 aserciones: "testify"
 
