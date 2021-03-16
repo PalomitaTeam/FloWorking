@@ -22,6 +22,6 @@ test:
 aserciones: "testify"
 
 testing: 
-    runner: Makefile
+    runner: make
     framework: native
 
