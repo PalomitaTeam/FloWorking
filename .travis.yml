@@ -5,3 +5,4 @@ go: 1.16
 before_install:
 
 script:
+  - make build
