@@ -1,0 +1,27 @@
+language: go
+
+go: 
+  - 1.16
+
+matrix:
+  # It's ok if our code fails on unstable development versions of Go.
+  allow_failures:
+    - go: tip
+  # Don't wait for tip tests to finish. Mark the test run green if the
+  # tests pass on the stable versions of Go.
+  fast_finish: true
+
+before_install:
+  - go get github.com/joho/godotenv
+  - go get github.com/sirupsen/logrus
+  - go get go.mongodb.org/mongo-driver
+
+
+script:
+  - make build
+  - make check
+  - make test
+
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
+
