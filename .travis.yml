@@ -2,8 +2,6 @@ language: go
 
 go: 
   - 1.16
-  - release
-  - tip
 
 matrix:
   # It's ok if our code fails on unstable development versions of Go.
